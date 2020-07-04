@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Overview from './Overview';
 import Item from './Item';
+import {ItemModel} from './Item';
 import {ItemProps} from './Item';
 
 
@@ -24,7 +25,7 @@ type MyState = {
   count: number;
   q: number;
   displayCurrency : string;
-  items : ItemProps[];
+  items : ItemModel[];
 };
 
 class Hello extends React.Component<MyProps, MyState> {
@@ -40,49 +41,17 @@ class Hello extends React.Component<MyProps, MyState> {
     ]
   };
 
-  /*private buildItemProps = () : ItemProps => {return {itemType : 'Share', name : 'Disney', quantity : 147, valuePerUnit : 74, currency : 'USD'};}*/
-  private buildItemProps = (index : number) : ItemProps => this.state.items[index];
-
-  /*private renderAllItems = () : JSX.Element => {
-    let ret : JSX.Element;
-    {this.state.items.forEach(element => {
-      <Item {...this.buildItemProps(1)} />  
-    });}
-  };*/
-
-  private renderAllItems = () : JSX.Element => {
-    let allItems = this.state.items.map((value, index) => <Item {...this.buildItemProps(index)}/> );
-    return (
-       <>
-          {allItems}
-       </>
-    );
-  };
+  private buildItemProps = (index : number) : ItemProps => {return {model: this.state.items[index], onRemoveClick: this.handleRemoveClick};}
 
   private renderAllItemsAlt = () : JSX.Element[] => {
-    return this.state.items.map((value, index) => <Item {...this.buildItemProps(index)}/> );
-  };
-
-  private renderAllItemsAlt2 = () : JSX.Element[] => {
-    let ret : JSX.Element[] = [];
-
-    this.state.items.forEach( (item, index) => 
-      {
-        ret.push(<Item {...this.buildItemProps(index)}/>);
-      }
-    );
-
-    return ret;
-  };
-
-  private renderItemsList = () : JSX.Element => {
-    let listItemList : JSX.Element[] = this.state.items.map((value, index) => <li key={value.name} ><Item {...this.buildItemProps(index)}/></li> );
-    return ( <ul>{listItemList}</ul> );
-  };
-
-  private renderAllItemsAlt3 = () : JSX.Element[] => {
     return this.state.items.map((value, index) => <Item key={value.name} {...this.buildItemProps(index)}/> );
   };
+
+  private handleRemoveClick = (name : string) : void => {
+    let newItemsState = this.state.items.filter(item => item.name != name);
+    this.setState({items : newItemsState});
+  }
+
 
   render() {
     return (
@@ -90,14 +59,7 @@ class Hello extends React.Component<MyProps, MyState> {
         {this.props.message} {this.state.count}
         <Overview message='Some overview' msg2="hm"/>
         <Overview message='Second overview' msg2="hmmm"/>
-{/*        Single item:
-        <Item {...this.buildItemProps(0)} />
-        Multiple items:
-        {this.renderAllItems()}
         {this.renderAllItemsAlt()}
-        {this.renderAllItemsAlt2()}
-    {this.renderItemsList()} */}
-        {this.renderAllItemsAlt3()}
       </div>
     );
   }
