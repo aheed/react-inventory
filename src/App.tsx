@@ -5,7 +5,7 @@ import Overview from './Overview';
 import Item from './Item';
 import {ItemModel} from './Item';
 import {ItemProps} from './Item';
-
+import AddDialog from './AddDialog';
 
 
 //////////////////////////
@@ -48,10 +48,25 @@ class Hello extends React.Component<MyProps, MyState> {
   };
 
   private handleRemoveClick = (name : string) : void => {
-    let newItemsState = this.state.items.filter(item => item.name != name);
+    let newItemsState = this.state.items.filter(item => item.name !== name);
     this.setState({items : newItemsState});
   }
 
+  private isValidItemToAdd = (newItem : ItemModel) : boolean => {
+    return newItem.name !== ''
+      && !this.state.items.some(item => item.name === newItem.name);
+  }
+
+  private handleAddItem = (newItem : ItemModel) : void => {
+    
+    if (!this.isValidItemToAdd(newItem))
+    {
+      return;
+    }
+
+    let newItemsState = [newItem].concat(this.state.items);
+    this.setState({items : newItemsState});
+  }
 
   render() {
     return (
@@ -59,6 +74,7 @@ class Hello extends React.Component<MyProps, MyState> {
         {this.props.message} {this.state.count}
         <Overview message='Some overview' msg2="hm"/>
         <Overview message='Second overview' msg2="hmmm"/>
+        <AddDialog onAddClick={this.handleAddItem} />
         {this.renderAllItemsAlt()}
       </div>
     );
