@@ -1,0 +1,6 @@
+Main window
+Overview
+Sum slider
+Add Item form
+Items list
+  Item
