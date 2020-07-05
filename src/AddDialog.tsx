@@ -1,5 +1,6 @@
 import React from 'react';
 import {ItemModel} from './Item';
+import './AddDialog.scss'
 
 
 export type AddDialogProps = {
@@ -22,7 +23,8 @@ class AddDialog extends React.Component<AddDialogProps, ItemModel> {
 
   submitForm = () => {
     this.setState({name: this.state.name.trim()}, 
-        () => this.props.onAddClick(this.state));
+        () => {this.props.onAddClick(this.state);
+               this.setState({name: ''})} );
   }
 
   render() {
@@ -35,6 +37,8 @@ class AddDialog extends React.Component<AddDialogProps, ItemModel> {
             id="name"
             value={this.state.name}
             onChange={this.handleChangeName}
+            placeholder='Type share name'
+            autoFocus
             />
         <label htmlFor="job">Job</label>
         <input
@@ -42,7 +46,7 @@ class AddDialog extends React.Component<AddDialogProps, ItemModel> {
             name="job"
             id="job"
             />
-        <input type="button" value="Submit" onClick={this.submitForm} />
+        <input className="add-button" type="button" value="Add" onClick={this.submitForm} />
         </form>
     );
   }
