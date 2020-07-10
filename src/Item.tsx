@@ -1,5 +1,5 @@
 import React from 'react';
-import './Item.css';
+import './Item.scss';
 
 export type ItemModel = {
     itemType: string;
